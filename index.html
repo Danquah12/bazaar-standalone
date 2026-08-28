@@ -382,7 +382,7 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
 <div class="page" id="pageAuth">
 <!-- ════ AUTH LANDING ════ -->
 <header class="topbar">
-  <a class="brand" href="https://bazaar.expediteconsults.com/bazaar/">
+  <a class="brand" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">
     <span class="brand-bolt">⚡</span>
     <span class="brand-name">BAZAAR</span>
   </a>
@@ -410,18 +410,18 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
     <span style="font-size:16px">🏪</span>
     <div>
       <div style="font-size:12px;font-weight:800;color:#f59e0b;letter-spacing:.5px">B2B MARKETPLACE</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.4)">bazaar.expediteconsults.com</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4)">bazaar-standalone.vercel.app</div>
     </div>
     <span style="background:#f59e0b;color:#000;font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;margin-left:4px">ACTIVE</span>
   </div>
   <!-- Divider -->
   <div style="width:1px;height:36px;background:rgba(255,255,255,.08)"></div>
   <!-- SPHERA Social tab -->
-  <div id="modeTabSocial" style="display:flex;align-items:center;gap:8px;padding:11px 28px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s" onmouseenter="this.style.background='rgba(124,58,237,.08)'" onmouseleave="this.style.background='transparent'" onclick="bzrSwitchMode('social')">
+  <div id="modeTabSocial" style="display:flex;align-items:center;gap:8px;padding:11px 28px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s" onmouseenter="this.style.background='rgba(124,58,237,.08)'" onmouseleave="this.style.background='transparent'" onclick="window.open('https://sphera-social.vercel.app', '_blank')">
     <span style="font-size:16px">✦</span>
     <div>
       <div style="font-size:12px;font-weight:800;color:rgba(255,255,255,.55);letter-spacing:.5px">SPHERA SOCIAL</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.3)">sphera.expediteconsults.com/#bazaar</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.3)">sphera-social.vercel.app</div>
     </div>
     <span style="background:rgba(124,58,237,.2);color:#a78bfa;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px">SWITCH →</span>
   </div>
@@ -1519,7 +1519,7 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
 
 <header class="topbar">
   <button class="mobile-menu-btn" onclick="openMobileNav()">☰</button>
-  <a class="brand" href="https://bazaar.expediteconsults.com/bazaar/" onclick="location.reload()">
+  <a class="brand" href="#" onclick="showDashboard(JSON.parse(localStorage.getItem('bzrCurrentUser')||'{}'));window.scrollTo({top:0,behavior:'smooth'});return false">
     <span class="brand-bolt">⚡</span>
     <span class="brand-name">BAZAAR</span>
   </a>
