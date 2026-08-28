@@ -387,12 +387,12 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
     <span class="brand-name">BAZAAR</span>
   </a>
   <div class="topbar-nav">
-    <a href="#" onclick="scrollToProducts();return false">Categories</a>
-    <a href="#" onclick="openSellNow();return false">Sell</a>
-    <a href="#" onclick="filterCat(document.querySelector('[data-cat=deals]'),'deals');return false">Deals</a>
-    <a href="#" onclick="openDeliveryHub();return false" style="color:#10b981;border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:20px;font-size:11px">🚚 Delivery</a>
-    <a href="#" onclick="goToEats();return false" style="color:#f59e0b;border:1px solid rgba(245,158,11,.3);padding:4px 12px;border-radius:20px;font-size:11px;background:rgba(245,158,11,.08);font-weight:700">🍽️ Eats</a>
-    <a href="https://sphera.expediteconsults.com/#bazaar" target="_blank" style="color:#a78bfa;border:1px solid rgba(124,58,237,.3);padding:4px 12px;border-radius:20px;font-size:11px">✦ SPHERA</a>
+    <a href="#categories" onclick="bzrNavCategories();return false">Categories</a>
+    <a href="#sell" onclick="openSellNow();return false">Sell</a>
+    <a href="#deals" onclick="bzrNavDeals();return false">Deals</a>
+    <a href="#delivery" onclick="openDeliveryHub();return false" style="color:#10b981;border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:20px;font-size:11px">🚚 Delivery</a>
+    <a href="#eats" onclick="bzrNavEats();return false" style="color:#f59e0b;border:1px solid rgba(245,158,11,.3);padding:4px 12px;border-radius:20px;font-size:11px;background:rgba(245,158,11,.08);font-weight:700">🍽️ Eats</a>
+    <a href="https://sphera.expediteconsults.com" target="_blank" style="color:#a78bfa;border:1px solid rgba(124,58,237,.3);padding:4px 12px;border-radius:20px;font-size:11px">✦ SPHERA</a>
   </div>
   <div style="display:flex;gap:10px;align-items:center">
     <button class="btn btn-ghost" onclick="showTab('login')" style="font-size:13px" id="bzrSignInBtn">Sign In</button>
@@ -1799,8 +1799,22 @@ function scrollToCats() {
   document.getElementById('catSection').scrollIntoView({ behavior:'smooth' });
 }
 function scrollToProducts() {
-  const el = document.getElementById('productsSection');
+  const el = document.getElementById('productsSection') || document.getElementById('catSection');
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function bzrNavCategories() {
+  const el = document.getElementById('catSection') || document.getElementById('productsSection');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function bzrNavDeals() {
+  const dealsPill = document.querySelector('.cat[data-cat="deals"]') || document.querySelector('.cat');
+  if (dealsPill && typeof filterCat === 'function') filterCat(dealsPill, 'deals');
+  bzrNavCategories();
+}
+function bzrNavEats() {
+  if (typeof goToEats === 'function') goToEats();
+  const eatsSec = document.getElementById('pantrySection') || document.getElementById('catSection') || document.getElementById('productsSection');
+  if (eatsSec) eatsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ════════════════════════════════════════════════════════════
