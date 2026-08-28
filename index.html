@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -391,7 +391,7 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
     <a href="#" onclick="openSellNow();return false">Sell</a>
     <a href="#" onclick="filterCat(document.querySelector('[data-cat=deals]'),'deals');return false">Deals</a>
     <a href="#" onclick="openDeliveryHub();return false" style="color:#10b981;border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:20px;font-size:11px">🚚 Delivery</a>
-    <a href="https://bazaar.expediteconsults.com/eats.html" style="color:#f59e0b;border:1px solid rgba(245,158,11,.3);padding:4px 12px;border-radius:20px;font-size:11px;background:rgba(245,158,11,.08);font-weight:700">🍽️ Eats</a>
+    <a href="#" onclick="goToEats();return false" style="color:#f59e0b;border:1px solid rgba(245,158,11,.3);padding:4px 12px;border-radius:20px;font-size:11px;background:rgba(245,158,11,.08);font-weight:700">🍽️ Eats</a>
     <a href="https://sphera.expediteconsults.com/#bazaar" target="_blank" style="color:#a78bfa;border:1px solid rgba(124,58,237,.3);padding:4px 12px;border-radius:20px;font-size:11px">✦ SPHERA</a>
   </div>
   <div style="display:flex;gap:10px;align-items:center">
@@ -948,7 +948,7 @@ body.light-mode .dash-table td{color:#1e293b;border-color:rgba(0,0,0,.06)}
       <button class="bzr-sub-pill"        data-sub="halal"      onclick="bzrPantryFilter(this,'halal')">☪️ Halal</button>
       <button class="bzr-sub-pill"        data-sub="organic"    onclick="bzrPantryFilter(this,'organic')">🌿 Organic</button>
       <button class="bzr-sub-pill"        data-sub="marketplace" onclick="bzrPantryFilter(this,'marketplace')" style="background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.4);color:#10b981">🏪 Marketplace</button>
-      <button class="bzr-sub-pill" data-sub="restaurant" onclick="window.location.href='https://bazaar.expediteconsults.com/eats.html'" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(239,68,68,.15));border-color:rgba(245,158,11,.5);color:#f59e0b;font-weight:800">🍽️ Restaurant Delivery → BAZAAR Eats</button>
+      <button class="bzr-sub-pill" data-sub="restaurant" onclick="bzrPantryFilter(this,'restaurant')" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(239,68,68,.15));border-color:rgba(245,158,11,.5);color:#f59e0b;font-weight:800">🍽️ Restaurant Delivery → BAZAAR Eats</button>
     </div>
     <!-- Restaurant delivery panel — now handled by BAZAAR Eats (eats.html) -->
     <div id="bzrRestaurantPanel" style="display:none;margin-bottom:28px">
@@ -4833,17 +4833,36 @@ function bzrDetectZip() {
   );
 }
 
+function goToEats() {
+  const pantryLink = document.querySelector('.cat[data-cat="pantry"]');
+  if (pantryLink) filterCat(pantryLink, 'pantry');
+  const restPill = document.querySelector('.bzr-sub-pill[data-sub="restaurant"]');
+  if (restPill) bzrPantryFilter(restPill, 'restaurant');
+  setTimeout(() => {
+    const zipInput = document.getElementById('bzrZipInput');
+    bzrLoadRestaurants(zipInput?.value || '');
+  }, 100);
+}
+
 function bzrLoadRestaurants(zip) {
   const status = document.getElementById('bzrZipStatus');
   const grid = document.getElementById('bzrRestaurantGrid');
-  if (!zip || zip.length < 5) return;
+  
+  // If ZIP is provided (5 chars), filter. Otherwise show all featured restaurants.
+  const isZipFilter = Boolean(zip && zip.trim().length >= 5);
+  const matches = isZipFilter
+    ? _BZR_RESTAURANTS.filter(r => r.zip.includes(zip.trim()))
+    : _BZR_RESTAURANTS;
 
-  // Find restaurants that serve this ZIP
-  const matches = _BZR_RESTAURANTS.filter(r => r.zip.includes(zip));
-
-  if (status) status.textContent = matches.length
-    ? `📍 ZIP ${zip} — ${matches.length} restaurant${matches.length>1?'s':''} delivering to you`
-    : `📍 ZIP ${zip} — No partner restaurants yet (coming soon!)`;
+  if (status) {
+    if (isZipFilter) {
+      status.textContent = matches.length
+        ? `📍 ZIP ${zip} — ${matches.length} restaurant${matches.length>1?'s':''} delivering to you`
+        : `📍 ZIP ${zip} — Showing all ${_BZR_RESTAURANTS.length} partner restaurants`;
+    } else {
+      status.textContent = `🍽️ Showing all ${matches.length} partner kitchens & restaurants`;
+    }
+  }
 
   if (!grid) return;
   if (!matches.length) {
