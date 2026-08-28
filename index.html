@@ -2084,13 +2084,13 @@ async function refreshDash(){
         id:       p.id||('P-'+i),
         sku:      p.sku||p.model||('BZR-'+String(1000+i)),
         name:     p.name||'Product '+(i+1),
-        price:    parseFloat(p.price?.value✦p.price✦0)||(19.99+i*3.5),
-        cost:     parseFloat(p.cost?.value✦p.cost✦0)||(parseFloat(p.price?.value✦p.price)*0.4)||8,
+        price:    parseFloat(p.price?.value || p.price || 0)||(19.99+i*3.5),
+        cost:     parseFloat(p.cost?.value || p.cost || 0)||(parseFloat(p.price?.value || p.price || 0)*0.4)||8,
         supplier: p.supplier||p.platform||p.cat||'BAZAAR',
         category: p.category||p.cat||'General',
-        stock:    parseInt(p.quantity✦p.stock✦0)||Math.floor(Math.random()*80+5),
-        sold:     parseInt(p.sold✦p.orders_count✦0)||Math.floor(Math.random()*80+i),
-        views:    parseInt(p.views✦0)||Math.floor(Math.random()*3000+100),
+        stock:    parseInt(p.quantity || p.stock || 0)||Math.floor(Math.random()*80+5),
+        sold:     parseInt(p.sold || p.orders_count || 0)||Math.floor(Math.random()*80+i),
+        views:    parseInt(p.views || 0)||Math.floor(Math.random()*3000+100),
         status:   p.status||'Active',
         ebay_id:  p.ebay_id||p.item_id||null,
         img:      p.img||(p.image?.startsWith('http')?p.image:'📦'),
@@ -2105,8 +2105,8 @@ async function refreshDash(){
         customer:   o.customer||o.customer_email?.split('@')[0]||'Customer '+(i+1),
         product:    o.product||o.items?.[0]?.name||'Order Item',
         supplier:   o.supplier||'BAZAAR',
-        amount:     parseFloat(o.totals?.total✦o.total✦o.amount✦0)||(29.99+i*5),
-        profit:     parseFloat(o.profit✦0)||((parseFloat(o.totals?.total✦o.total✦30))*0.22),
+        amount:     parseFloat(o.totals?.total || o.total || o.amount || 0)||(29.99+i*5),
+        profit:     parseFloat(o.profit || 0)||((parseFloat(o.totals?.total || o.total || 30))*0.22),
         tracking:   o.tracking||o.tracking_number||null,
         status:     o.status||'Pending',
         statusClass:o.statusClass||(o.status==='Shipped'?'dash-badge-green':o.status==='Delivered'?'dash-badge-blue':o.status==='Paid'?'dash-badge-amber':'dash-badge-red'),
@@ -4994,7 +4994,7 @@ function bzrChangeQty(key, restaurantName, item, price, delta) {
 
   // Update qty display
   const el = document.getElementById(`bzrQty_${key}`);
-  if (el) el.textContent = (_bzrFoodCart[key]?.qty ✦ 0);
+  if (el) el.textContent = (_bzrFoodCart[key]?.qty || 0);
 
   bzrUpdateCartBar();
 }
@@ -5449,7 +5449,7 @@ function bzrRenderMarkets(filter, append) {
   // Sort
   const sortBy = document.getElementById('bzrMktSort')?.value || 'distance';
   if (sortBy === 'distance' && _bzrMktUserCoords) {
-    matches.sort((a,b) => (a._dist ✦ 99999) - (b._dist ✦ 99999));
+    matches.sort((a,b) => (a._dist || 99999) - (b._dist || 99999));
   } else if (sortBy === 'name') {
     matches.sort((a,b) => a.name.localeCompare(b.name));
   } else if (sortBy === 'state') {
